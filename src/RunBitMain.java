@@ -8,55 +8,45 @@ public class RunBitMain extends JFrame implements Runnable {
 	 */
 	private static final long serialVersionUID = 1L;
 	//RunBitMan - Copyright Ian Millstein and Alok Tripathy 2012. All Rights Reserved. - Source Code is Here.
-	public boolean running;
-	public Thread animator;
-	public int dbHeight = 600, dbWidth = 600;
-	public Image dbImage = null;
+
+	//Graphics
 	public Graphics dbg;
 	public int headX = 110, headY = 253, bodyStartX = 115, bodyStartY = 263, bodyEndX = 115, bodyEndY = 278, armStartX = 110, armStartY = 272, armEndX = 120, armEndY = 272, rightLegEndX = 110, rightLegEndY = 285, leftLegEndX = 120, leftLegEndY = 285;
-	public int monHeadX = 260, monHeadY = 256; // monHeadX = 260, monHeadY = 256;
+	public int monHeadX = 260, monHeadY = 256;
+	public int SputHeadX = 350, SputHeadY = 200;
+	public int blockX = 430;
+
+	//Controls
 	public boolean jumpKeyPressed, rightKeyPressed, leftKeyPressed, falling;
-	public int counter;
 	public float velocityX = 5, velocityY = 5, gravity = 0.5f;
-	public int positionX, positionY;
-	public final int positionWidth = 14, positionHeight = 34;
+	public int counter;
 	public int direction;
 	public int direction1;
-	public int score, life = 3;
-	public int blockX = 430;
-	public Container c;
-	public int lifeTracker;
-	public int SputHeadX = 350, SputHeadY = 200;
-	//JButton button = new JButton("Start Game");
 
+	//Screen
+	public Image dbImage = null;
+	public int dbHeight = 600, dbWidth = 600;
+	public int score, life = 3;
+	public Container c;
+
+	//Program
+	public boolean running;
+	public Thread animator;
 
 	public RunBitMain() {
 
-
 		super( "RunBitMan Copyright Ian Millstein and Alok Tripathy 2012. All Rights Reserved." );
-
-
-		//ActionHandler aHandler = new ActionHandler();
 		c = getContentPane();
 		c.setLayout( new FlowLayout() );
-		//c.add(button);
-		//button.addActionListener( aHandler );
 		startGame();
-
-
 		KeyHandler handler = new KeyHandler();
 		addKeyListener(  handler );
-
-
 		setSize( 600, 600 );
 		setVisible(true);
 
-		
 	}
 
-	
 	public void startGame() {
-
 
 		if( animator == null || !running ) {
 			animator = new Thread( this );
@@ -64,26 +54,19 @@ public class RunBitMain extends JFrame implements Runnable {
 		}
 	}
 
-
 	public void run() {
-
 
 		running = true;
 
-
 		try {
-			/*	JLabel label = new JLabel( "Prepare! Game will begin in 5 seconds." );
-			c.add( label );
-			Thread.sleep( 5000 );
-			label.setVisible( true ); */
 			JOptionPane.showMessageDialog( null, "Instructions:\nGet BitMan to the gold block without being touched by the monster!\n\nAre you up for the challenge?", "Prepare", JOptionPane.WARNING_MESSAGE ); 
 
 		}
+
 		catch( Exception e ) {}
 		while( running ) {
 			gameRender();
 			paintScreen();
-
 
 			try {
 				Thread.sleep( 20 );
@@ -92,9 +75,7 @@ public class RunBitMain extends JFrame implements Runnable {
 		}
 	}
 
-
 	public void gameRender() {
-
 
 		if( dbImage == null ) {
 			dbImage = createImage( dbWidth, dbHeight );
@@ -104,21 +85,16 @@ public class RunBitMain extends JFrame implements Runnable {
 
 		dbg = dbImage.getGraphics();
 
-
 		dbg.setColor( Color.white ); // screen
 		dbg.fillRect( 0, 0, dbWidth, dbHeight );
 
-
-		//for( int q  = 0; q < monHeadX.length; q++ ) {
 		dbg.setColor( Color.black );
-
 
 		dbg.setColor( Color.blue ); // main platform
 		dbg.fillRect(100, 287, 380, 26);
 
 		dbg.setColor( Color.orange);
 		dbg.fillRect( blockX, 272, 15, 15);
-
 
 		dbg.setColor( Color.black ); // BitMan
 		dbg.drawOval( headX, headY, 10, 10 );
@@ -127,26 +103,17 @@ public class RunBitMain extends JFrame implements Runnable {
 		dbg.drawLine( bodyEndX, bodyEndY, leftLegEndX, leftLegEndY );
 		dbg.drawLine( bodyEndX, bodyEndY, rightLegEndX, rightLegEndY );
 
-
 		dbg.setColor( Color.green); // monster
 		dbg.fillOval( monHeadX , monHeadY, 30, 30);
-		
 
 		dbg.setColor( Color.magenta ); // monster #2
 		dbg.fillOval( SputHeadX, SputHeadY, 25, 25);
 
-		//positionX = headX - 2;
-		//positionY = headY - 2;
-		//dbg.setColor( Color.white );
-		//dbg.drawRect( headX - 2, headY - 2, positionWidth, positionHeight );
-		//update( 1 );
-
 		dbg.setColor( Color.yellow );
 		dbg.drawRect( monHeadX, monHeadY, 30, 30);
-		
+
 		dbg.setColor( Color.yellow );
 		dbg.drawRect(SputHeadX, SputHeadY, 25, 25);
-		
 
 		if( jumpKeyPressed && counter <= 20) {
 			headY -= velocityY;
@@ -157,13 +124,8 @@ public class RunBitMain extends JFrame implements Runnable {
 			rightLegEndY -= velocityY;
 			leftLegEndY -= velocityY;
 			counter++;
-
-
-			//if( counter >= 20 ) {
-			//	jumpKeyPressed = false;
-			//counter = 0;
-			//}
 		}
+
 		else if( jumpKeyPressed && counter > 20 )
 			jumpKeyPressed = false;
 
@@ -173,7 +135,6 @@ public class RunBitMain extends JFrame implements Runnable {
 		else
 			falling = false;
 
-		
 
 		if( rightKeyPressed ) {
 			headX += velocityX;
@@ -184,8 +145,8 @@ public class RunBitMain extends JFrame implements Runnable {
 			rightLegEndX += velocityX;
 			leftLegEndX += velocityX;
 
-
 		}
+
 		if (leftKeyPressed) {
 			headX -= velocityX;
 			bodyStartX -= velocityX;
@@ -195,7 +156,6 @@ public class RunBitMain extends JFrame implements Runnable {
 			rightLegEndX -= velocityX;
 			leftLegEndX -= velocityX;
 		}
-
 
 		if( headY >=  253 ) {
 			headY = 253;
@@ -220,7 +180,6 @@ public class RunBitMain extends JFrame implements Runnable {
 			armEndY = 272;
 
 
-
 		if( rightLegEndY >= 285 )
 			rightLegEndY = 285;
 
@@ -238,54 +197,50 @@ public class RunBitMain extends JFrame implements Runnable {
 			rightLegEndY += velocityY;
 			leftLegEndY += velocityY;
 		}
+
 		dbg.setColor( Color.black );
 		dbg.drawString( "Score: " + score, 100, 100 );
 		dbg.drawString("Lives remaining: " + life, 100, 120);
 
-
 		for( int i = 0; i <= 900; i++ ) {
-
 
 			if(( armStartX <= monHeadX + 30 && armEndX >= monHeadX )) {
 				if( rightLegEndY >= monHeadY && rightLegEndY <= monHeadY + 30) {
 
-							lost();
-							life--;
+					lost();
+					life--;
 
-							if( life == 0 ) {
-								JOptionPane.showMessageDialog( null, "You Lose!\nYour high score was: " + score + " points" , "Lost", JOptionPane.WARNING_MESSAGE ); // Message displayed when player dies
-								score = 0;
-								life = 3; // how many lives player starts with
-							}
-
-						}
-
+					if( life == 0 ) {
+						JOptionPane.showMessageDialog( null, "You Lose!\nYour high score was: " + score + " points" , "Lost", JOptionPane.WARNING_MESSAGE ); // Message displayed when player dies
+						score = 0;
+						life = 3; // how many lives player starts with
 					}
+
 				}
+
+			}
+		}
+
 		if(( armStartX <= SputHeadX + 30 && armEndX >= SputHeadX )) {
 			if( rightLegEndY >= SputHeadY && rightLegEndY <= SputHeadY + 30) {
 
-						lost();
-						life--;
+				lost();
+				life--;
 
-						if( life == 0 ) {
-							RunBitMainEASY.main(null);
-						}
-
-					}
-
+				if( life == 0 ) {
+					RunBitMain.main(null);
 				}
-			
-		
+
+			}
+
+		}
 
 		for( int i = 0; i <= 225; i++ ) {
-
 
 			if( ( armStartX <= blockX + 15 && armEndX >= blockX ) ) {
 				if( rightLegEndY >= 272 && rightLegEndY <= 287 ) {
 					lost();
 					score++;
-
 
 					int randNum = ( int ) ( Math.random() * 430 );
 					if( randNum < 110 )
@@ -296,13 +251,13 @@ public class RunBitMain extends JFrame implements Runnable {
 			}
 		}
 
-
 		if( headX < 110 ) {
 			headX = 110; headY = 253; bodyStartX = 115; bodyStartY = 263; bodyEndX = 115; bodyEndY = 278; armStartX = 110; armStartY = 272; armEndX = 120; armEndY = 272; rightLegEndX = 110; rightLegEndY = 285; leftLegEndX = 120; leftLegEndY = 285;
 		}
 		else if( headX >= 470 ) {
 			headX = 470; headY = 253; bodyStartX = 475; bodyStartY = 263; bodyEndX = 475; bodyEndY = 278; armStartX = 470; armStartY = 272; armEndX = 480; armEndY = 272; rightLegEndX = 470; rightLegEndY = 285; leftLegEndX = 480; leftLegEndY = 285;
 		}
+
 		if( direction % 2 == 0 )
 			monHeadX -= 6; // speed of monster
 		else
@@ -311,26 +266,22 @@ public class RunBitMain extends JFrame implements Runnable {
 
 		if( monHeadX <= 100 || monHeadX >= 450 )
 			direction++;
-		//else if( monHeadX >= 480 )
-		//	direction++;
-		
+
+
 		if( direction1 % 2 == 0 )
 			SputHeadX -= 4; // speed of second monster
 		else
 			SputHeadX += 4;
-		
-		
+
+
 		if (SputHeadX <= 100 || SputHeadX > 450 )
 			direction1++;
-
 
 	}
 
 
 	public void lost() {
 
-
-		//for( int i = 0; i < monHeadX.length; i++ ) {
 		try {
 			Thread.sleep( 500 ); // How much time before player spawns after death
 		}
@@ -342,21 +293,15 @@ public class RunBitMain extends JFrame implements Runnable {
 		direction = 0;
 	}
 
-
-
 	public void onJumpKeyPressed() {
-
 
 		velocityY = -12.0f;
 	}
 	public void paintScreen() {
 
-
 		Graphics g;
 
-
 		try {
-
 
 			g = this.getGraphics();
 			if( ( g != null ) && ( dbImage != null ) ) {
@@ -371,9 +316,7 @@ public class RunBitMain extends JFrame implements Runnable {
 
 	public static void main( String[] args ) {
 
-
 		RunBitMain app = new RunBitMain();
-
 
 		app.addWindowListener(
 				new WindowAdapter() {
@@ -423,16 +366,4 @@ public class RunBitMain extends JFrame implements Runnable {
 
 		}
 	}
-
-
-	//private class ActionHandler implements ActionListener {
-
-
-	/*public void actionPerformed(ActionEvent event) {
-		Object source = event.getSource();
-		if (source == button) {
-			startGame(); */
 }
-
-
-//	}
