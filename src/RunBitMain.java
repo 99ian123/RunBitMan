@@ -1,6 +1,5 @@
 import java.awt.*; // So java knows that is is a GUI
 import javax.swing.*; // Buttons/panes/panels (etc)
-
 import java.awt.event.*; // For event handling
 public class RunBitMain extends JFrame implements Runnable {
 	/**
